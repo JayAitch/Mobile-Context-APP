@@ -5,12 +5,13 @@
 <?php
 
 $html = '<form method="post">'
-	.'Longitude: <input type ="decimal" name="logitude" ><br>'
-	.'Latitude: <input type="text" name="latitude" ><br>'
-	.'Event Name: <input type="text" name="name" ><br>'
-	.'Description: <input type="text" name="description" ><br>'
+	.'Longitude(decimal(10,7)): <input type ="decimal" name="logitude" ><br>'
+	.'Latitude(decimal(10,7)): <input type="text" name="latitude" ><br>'
+	.'Event Name(Varchar[50]): <input type="text" name="name" ><br>'
+	.'Description(Varchar [500]): <input type="text" name="description" ><br>'
 	.'Date: <input type="date" name="date" ><br>'
 	.'<input type="submit"><br>'
+	.'Table also accepts blob for images and id (AI)'
 	.'</form>';
 
 
