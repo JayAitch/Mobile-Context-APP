@@ -1,77 +1,99 @@
-//map init is simply generating and populating the map
- function mapInit(event) {
-	var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
-          center: event
-        });
-        var marker = new google.maps.Marker({
-          position: event,
-          map: map
-        });
-      }
+	//	added a load event listener to fire ajax on page load DOM event information immediately after
+	// as well as doming button events for creating the map
+window.addEventListener("load", function(event) {    init();  });
+function init(){
+		console.log("init hello");
+		var mapBttn = document.getElementById('map-bttn');	
+		mapBttn.addEventListener("click", createMarker);
+		getJson();		
+	}
+	
+
 	  
 	  
-	  //get json will exicute ajax to eventAPI and populate json variables
-	  // this method is called via the google maps async defer via callback 
-	  // this calls on page load simular to windows.eventlistener
+	  //	get json will exicute ajax to eventAPI and populate json variables
+	  //	this method was called via the google maps async defer via callback 
+	  //	is now called via e3vent listener on page load to allow map and events to be generated seperately
+	  //	this calls on page load simular to windows.eventlistener
 function getJson(){	
 	var xhttp = new XMLHttpRequest();
-	console.log("heloo");
 	xhttp.onreadystatechange = function() {
-		if (this.readyState === 4 && this.status === 200) {		
-		// parse the response and call marker and info creation psssing in parsed JSON  
-		var eventJson = JSON.parse(xhttp.responseText);	
-		createMarker(eventJson);
-		createInfo(eventJson);
 		
-		//test logs for checking objects
-		console.log("test");
+		if (this.readyState === 4 && this.status === 200) {		
+		//	parse the response info creation psssing in parsed JSON  
+		//	event Json changed to global scope to allow it to be picked up be click event
+		eventJson = JSON.parse(xhttp.responseText);	
+		createInfo();
+		
+		//	test logs for checking objects
 		console.dir(xhttp.responseText);		
-		console.log("testingglobal");
+
 		}
 	};
-	//exicute api call
-	var urlWithParam = "http://itsuite.it.brighton.ac.uk/jh1152/mobileapp/maptests/eventApi.php?id=" + id;
+	//	exicute api call
+	var urlWithParam = "http://itsuite.it.brighton.ac.uk/jh1152/mobileapp/maptests/database/eventApi.php?id=" + id;
 	xhttp.open("GET", urlWithParam, true);
 	xhttp.send();
 	console.log(id);
 	
 }
-//generate "marker" from event position information handed from the API
-function createMarker(event){
-	//test logs for checking the object
-	console.log(event[0].ID);
-	console.log(event[0].LONGITUDE);
-	//parse json data into float
-	var eventLong = parseFloat(event[0].LONGITUDE);
-	var eventLat = parseFloat(event[0].LATITUDE);
-	//gerate lat lng literal from json attributes
+	//	generate "marker" from event position information handed from the API
+function createMarker(){
+	//	test logs for checking the object
+	
+	console.log(eventJson[0].ID);
+	console.log(eventJson[0].LONGITUDE);
+	//	parse json data into float
+	var eventLong = parseFloat(eventJson[0].LONGITUDE);
+	var eventLat = parseFloat(eventJson[0].LATITUDE);
+	//	gerate lat lng literal from json attributes
 	var location = {lat: eventLat, lng: eventLong};
 	mapInit(location);
 }
 
-// This method is simply DOMing page elements from table contents 
-function createInfo(json) {
+
+//create map and resize container 
+function mapInit(eventPos) {
+	//var mapDiv = document.createElement("div");
+	//mapDiv.setAttribute("id", "map")
+	var mapWrapper = document.getElementById('map').style.height= "50vh";
+	var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: eventPos
+        });		
+        var marker = new google.maps.Marker({
+          position: eventPos,
+          map: map
+        });
+      }
+	  
+	  
+	  
+	  
+	  
+	//	This method is simply DOMing page elements from table contents 
+function createInfo() {
 	
-	console.log(json)
+	//console.log()
 	var blankColumn = "No Information entered by the event organiser";
 	
-			//create elements 
+			//	create elements 
 			 var e = document.createElement("div");
 			 var eDate = document.createElement("p");
 			 var eDescr = document.createElement("p");
-			 var eImg = document.createElement("img");
+			// var eImg = document.createElement("img");
 			 // select
 			 var eName = document.querySelector("#event-name");
 			 
 			
-			//set selector
+			//	set selector
 			e.setAttribute("class", "event-info");
 			
-			//generate paragram contents through json attibutes			
-			eName.textContent = "Directions to " + json[0].NAME;	
-			eDate.textContnt =  json[0].DATE;
-			eDescr.textContent = json[0].DESCRIPTION;	
+			//	generate paragram contents through json attibutes			
+			eName.textContent = "Directions to " + eventJson[0].NAME;
+			
+			eDate.textContent =  "Date" + eventJson[0].DATE;
+			eDescr.textContent = eventJson[0].DESCRIPTION;	
 			
 			
 			//	select wrapper and append elements

@@ -1,0 +1,44 @@
+html{
+	font-family:  arial;
+}
+.content-wrapper{
+	width: 70%;	
+	margin: 30vh auto;
+	background-color: grey;
+}
+#login-wrapper{
+	font-size: 2em;
+	width: 100%;
+	margin:auto;
+	background-color: light-grey;
+	display: block;
+	
+}
+#login-wrapper form{
+	width: 70%;
+	margin: 50% auto;
+	padding: 5% 10%;
+}
+
+#login-wrapper label{
+	width: 75%;
+	padding: 1% 0.5%;	
+	display:block;
+	background-color: purple;
+	border-radius: 10px 10px 0px 0px;	
+	color: White;
+	text-align:center;
+}
+
+#login-wrapper input{
+	width: 100%;
+	display:block;
+	min-height: 30px;
+	margin-bottom: 5%;
+}
+#login-wrapper input[type="submit"]{
+	width: 50%;
+	display:block;
+	margin-left: 50%;
+	font-size: 0.5em;
+}
